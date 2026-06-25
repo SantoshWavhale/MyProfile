@@ -299,13 +299,32 @@ cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
 <!-- Portfolio Visit Tracker -->
 <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@4/dist/fp.min.js"></script>
 <script>
+  const SUPABASE_URL = "https://obrohtnkehcmtpidufde.supabase.com";
+  const SUPABASE_ANON_KEY = "sb_publishable_wANvSnP7dRK6N5MTmOisPw_YIf3pyzS";
+
+  async function sendToSupabase(visitData) {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/visits`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify(visitData)
+    });
+
+    if (response.ok) {
+      console.log("Visit saved to Supabase");
+    } else {
+      console.error("Failed to save visit", await response.text());
+    }
+  }
+
   async function trackVisit() {
-    // Step 1: Generate fingerprint ID
     const fp = await FingerprintJS.load();
     const result = await fp.get();
-    const visitorId = result.visitorId; // unique ID per browser/device
+    const visitorId = result.visitorId;
 
-    // Step 2: Collect metadata
     const visitData = {
       fingerprint_id: visitorId,
       page: window.location.pathname,
@@ -317,10 +336,8 @@ cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
       visited_at: new Date().toISOString()
     };
 
-    console.log("Visit tracked:", visitData); // you'll see this in browser console for now
-
-    // Step 3: Send to Supabase (we'll plug this in during Step B)
-    // await sendToSupabase(visitData);
+    console.log("Visit tracked:", visitData);
+    await sendToSupabase(visitData); // now actually sending data
   }
 
   trackVisit();
