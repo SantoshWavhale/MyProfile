@@ -1,0 +1,303 @@
+cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Santosh Wavhale – Incident & Problem Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:   #1A2A4A;
+    --teal:   #0D7377;
+    --teal-light: #14A8AD;
+    --gold:   #C9A84C;
+    --off-white: #F7F8FA;
+    --white:  #ffffff;
+    --gray-1: #F0F2F5;
+    --gray-2: #D8DCE6;
+    --gray-3: #8892A4;
+    --text:   #1C2536;
+    --text-soft: #4A5568;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--text); line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(26,42,74,0.97); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 64px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--white); letter-spacing: 0.5px; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.5px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--navy) 0%, #0F1D35 60%, #0A2A2B 100%);
+    display: flex; align-items: center;
+    padding: 100px 2.5rem 4rem; position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(13,115,119,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  #hero::after {
+    content: ''; position: absolute; bottom: -80px; left: 40%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(13,115,119,0.2); border: 1px solid rgba(13,115,119,0.4);
+    color: var(--teal-light); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 20px; margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 4vw, 3.4rem); color: var(--white); line-height: 1.15; margin-bottom: 0.5rem; }
+  .hero-name span { color: var(--gold); }
+  .hero-title { font-size: 1rem; color: var(--teal-light); font-weight: 500; letter-spacing: 0.3px; margin-bottom: 1.5rem; }
+  .hero-desc { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.8; margin-bottom: 2rem; max-width: 480px; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { background: var(--teal); color: var(--white); padding: 12px 28px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); }
+  .btn-outline { border: 1.5px solid rgba(255,255,255,0.3); color: var(--white); padding: 12px 28px; border-radius: 8px; font-size: 0.88rem; font-weight: 500; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+  .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .hero-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem; backdrop-filter: blur(10px); }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); font-weight: 700; display: block; line-height: 1; }
+  .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin-top: 4px; line-height: 1.3; }
+  .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 1.25rem 0; }
+  .card-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tool-badge { background: rgba(13,115,119,0.25); color: var(--teal-light); font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.3px; }
+
+  /* SECTIONS */
+  section { padding: 5rem 2.5rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--navy); margin-bottom: 1rem; }
+  .section-sub { font-size: 0.95rem; color: var(--text-soft); max-width: 560px; line-height: 1.7; }
+
+  /* ABOUT */
+  #about { background: var(--off-white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+  .about-text p { font-size: 0.95rem; color: var(--text-soft); line-height: 1.8; margin-bottom: 1rem; }
+  .contact-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 10px; }
+  .contact-list li { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: var(--text-soft); }
+  .contact-list li strong { color: var(--navy); min-width: 60px; }
+  .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .exp-card { background: var(--white); border: 1px solid var(--gray-2); border-radius: 10px; padding: 1.1rem; border-left: 3px solid var(--teal); }
+  .exp-card h4 { font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .exp-card p { font-size: 0.78rem; color: var(--text-soft); line-height: 1.5; }
+
+  /* EXPERIENCE */
+  #experience { background: var(--white); }
+  .timeline { margin-top: 3rem; position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--teal), var(--navy)); }
+  .timeline-item { position: relative; margin-bottom: 2.5rem; }
+  .timeline-dot { position: absolute; left: -1.95rem; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--teal); border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--teal); }
+  .timeline-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .tl-role { font-size: 1rem; font-weight: 700; color: var(--navy); }
+  .tl-company { font-size: 0.85rem; color: var(--teal); font-weight: 500; }
+  .tl-date { font-size: 0.75rem; font-weight: 600; color: var(--white); background: var(--navy); padding: 3px 10px; border-radius: 12px; white-space: nowrap; }
+  .tl-bullets { list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 6px; }
+  .tl-bullets li { display: flex; gap: 8px; font-size: 0.87rem; color: var(--text-soft); line-height: 1.6; }
+  .tl-bullets li::before { content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+
+  /* SKILLS */
+  #skills { background: var(--navy); }
+  #skills .section-title { color: var(--white); }
+  #skills .section-eyebrow { color: var(--gold); }
+  #skills .section-sub { color: rgba(255,255,255,0.6); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .skill-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; transition: background 0.2s, border-color 0.2s; }
+  .skill-card:hover { background: rgba(13,115,119,0.15); border-color: rgba(13,115,119,0.4); }
+  .skill-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .skill-card h3 { font-size: 0.88rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag { font-size: 0.72rem; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.65); padding: 3px 8px; border-radius: 5px; }
+
+  /* CONTACT */
+  #contact { background: var(--off-white); }
+  .contact-box { background: var(--navy); border-radius: 16px; padding: 3rem; margin-top: 3rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .contact-box h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--white); margin-bottom: 0.5rem; }
+  .contact-box p { font-size: 0.9rem; color: rgba(255,255,255,0.65); }
+  .contact-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer { background: #0F1723; padding: 1.5rem 2.5rem; text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+
+  @media (max-width: 768px) {
+    .hero-inner, .about-grid, .skills-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .expertise-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .contact-box { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">SW<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Open to Opportunities</div>
+      <h1 class="hero-name">Santosh<br><span>Wavhale</span></h1>
+      <p class="hero-title">Senior Incident &amp; Problem Manager &nbsp;·&nbsp; ITIL &nbsp;·&nbsp; ServiceNow</p>
+      <p class="hero-desc">ITIL-aligned service operations professional with 3.9 years of experience keeping critical IT systems running. I lead Major Incident bridge calls, manage P1/P2 resolutions, and drive root cause analysis to prevent recurrence — all while maintaining SLA excellence.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">Get In Touch ↓</a>
+        <a href="#experience" class="btn-outline">View Experience</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="stats-grid">
+        <div class="stat-item"><span class="stat-num">3.9</span><div class="stat-label">Years of Experience</div></div>
+        <div class="stat-item"><span class="stat-num">100%</span><div class="stat-label">SLA Achievement Rate</div></div>
+        <div class="stat-item"><span class="stat-num">P1/P2</span><div class="stat-label">Major Incidents Led</div></div>
+        <div class="stat-item"><span class="stat-num">ITIL</span><div class="stat-label">v3 / v4 Aligned</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="card-tools">
+        <span class="tool-badge">ServiceNow</span>
+        <span class="tool-badge">Graylog</span>
+        <span class="tool-badge">React JS</span>
+        <span class="tool-badge">SQL</span>
+        <span class="tool-badge">Excel</span>
+        <span class="tool-badge">RCA</span>
+        <span class="tool-badge">CAB</span>
+        <span class="tool-badge">KEDB</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-inner">
+    <div class="section-eyebrow">Who I Am</div>
+    <h2 class="section-title">About Me</h2>
+    <p class="section-sub">A calm head in critical situations, a data-driven thinker in steady state.</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I am a Senior Incident &amp; Problem Manager based in Pune, Maharashtra, with 3.9 years of experience in ITIL-driven production support and IT service operations at Aurus Tech Pvt. Ltd.</p>
+        <p>My core strength is staying focused when systems go down — coordinating cross-functional teams, communicating clearly to senior stakeholders, and driving swift service restoration without cutting corners on documentation or process.</p>
+        <p>Beyond ITSM, I hold front-end development skills in React JS, JavaScript, and HTML — and leverage advanced Excel for dashboards, KPI reporting, and trend analysis.</p>
+        <ul class="contact-list">
+          <li><strong>📍 Location</strong> Pune, Maharashtra</li>
+          <li><strong>📞 Phone</strong> +91-9552725571</li>
+          <li><strong>📧 Email</strong> wavhalesantosh11@gmail.com</li>
+          <li><strong>🎓 Degree</strong> B.E. Information Technology, SPPU 2019</li>
+        </ul>
+      </div>
+      <div>
+        <div class="expertise-grid">
+          <div class="exp-card"><h4>🔴 Incident Management</h4><p>P1/P2 bridge calls, full lifecycle ownership, escalation handling</p></div>
+          <div class="exp-card"><h4>🔍 Problem Management</h4><p>5 Whys, Fishbone RCA, KEDB creation &amp; maintenance</p></div>
+          <div class="exp-card"><h4>📊 SLA &amp; KPI</h4><p>Performance monitoring, gap analysis, client reporting dashboards</p></div>
+          <div class="exp-card"><h4>🔄 Change Management</h4><p>Risk analysis, CAB coordination, rollback validation, PIR</p></div>
+          <div class="exp-card"><h4>🛠️ ServiceNow</h4><p>Incident, Problem, Change modules, SLA monitoring &amp; reports</p></div>
+          <div class="exp-card"><h4>💻 Front-End Dev</h4><p>React JS, JavaScript, HTML, Tailwind CSS, Redux</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-eyebrow">Career Journey</div>
+    <h2 class="section-title">Work Experience</h2>
+    <p class="section-sub">Nearly 4 years of hands-on ITSM delivery in a fast-paced production support environment.</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <div>
+            <div class="tl-role">Senior Incident &amp; Problem Manager</div>
+            <div class="tl-company">Aurus Tech Pvt. Ltd. · Pune</div>
+          </div>
+          <div class="tl-date">Jul 2021 – May 2025</div>
+        </div>
+        <ul class="tl-bullets">
+          <li>Led P1/P2 Major Incident bridge calls — coordinating cross-functional teams, on-call resources and senior leadership for rapid service restoration</li>
+          <li>Managed end-to-end Incident lifecycle including logging, prioritisation, impact analysis, stakeholder communication and formal closure</li>
+          <li>Performed Root Cause Analysis using 5 Whys and Fishbone Diagram techniques; implemented corrective actions to prevent recurrence</li>
+          <li>Created and maintained KEDB (Known Error Database) to reduce repeat incident resolution time</li>
+          <li>Managed SLAs for key clients — monitored KPIs, identified gaps, drove corrective actions and presented dashboards to leadership</li>
+          <li>Governed Change Management process including risk assessment, CAB coordination, rollback validation and post-implementation reviews</li>
+          <li>Facilitated post-incident reviews (PIR) and CSI initiatives to strengthen service stability</li>
+          <li>Proficient in ServiceNow for incident/problem tracking, SLA monitoring and performance reporting</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-eyebrow">What I Bring</div>
+    <h2 class="section-title">Technical Skills</h2>
+    <p class="section-sub">A versatile mix of ITSM expertise, tooling proficiency, and development capability.</p>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="skill-icon">🎯</div><h3>Incident &amp; Problem Mgmt</h3><div class="skill-tags"><span class="skill-tag">Major Incident</span><span class="skill-tag">RCA</span><span class="skill-tag">KEDB</span><span class="skill-tag">5 Whys</span><span class="skill-tag">Fishbone</span><span class="skill-tag">PIR</span></div></div>
+      <div class="skill-card"><div class="skill-icon">📋</div><h3>ITSM &amp; ITIL</h3><div class="skill-tags"><span class="skill-tag">ITIL v3/v4</span><span class="skill-tag">Change Mgmt</span><span class="skill-tag">CAB</span><span class="skill-tag">CSI</span><span class="skill-tag">SLA Governance</span></div></div>
+      <div class="skill-card"><div class="skill-icon">🛠️</div><h3>Tools &amp; Platforms</h3><div class="skill-tags"><span class="skill-tag">ServiceNow</span><span class="skill-tag">Graylog</span><span class="skill-tag">GitHub</span><span class="skill-tag">VS Code</span><span class="skill-tag">iSupport</span></div></div>
+      <div class="skill-card"><div class="skill-icon">💻</div><h3>Front-End Development</h3><div class="skill-tags"><span class="skill-tag">React JS</span><span class="skill-tag">JavaScript</span><span class="skill-tag">HTML</span><span class="skill-tag">Tailwind CSS</span><span class="skill-tag">Redux</span><span class="skill-tag">jQuery</span></div></div>
+      <div class="skill-card"><div class="skill-icon">🗄️</div><h3>Databases</h3><div class="skill-tags"><span class="skill-tag">SQL</span><span class="skill-tag">Oracle</span><span class="skill-tag">PostgreSQL</span></div></div>
+      <div class="skill-card"><div class="skill-icon">📊</div><h3>Reporting &amp; Analytics</h3><div class="skill-tags"><span class="skill-tag">MS Excel</span><span class="skill-tag">Pivot Tables</span><span class="skill-tag">Dashboards</span><span class="skill-tag">KPI Tracking</span><span class="skill-tag">MTTR Analysis</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-eyebrow">Let's Connect</div>
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="section-sub">Actively looking for Incident Manager, Problem Manager, and Service Delivery roles in Pune.</p>
+    <div class="contact-box">
+      <div>
+        <h3>Open to New Opportunities</h3>
+        <p>Feel free to reach out via email or call — I typically respond within 24 hours.</p>
+        <br/>
+        <p style="color:rgba(255,255,255,0.75); font-size:0.9rem;">📧 wavhalesantosh11@gmail.com &nbsp;·&nbsp; 📞 +91-9552725571</p>
+      </div>
+      <div class="contact-actions">
+        <a href="mailto:wavhalesantosh11@gmail.com" class="btn-primary">Send Email ✉</a>
+        <a href="https://www.linkedin.com/in/wavhale-santosh-93a1903b6" target="_blank" class="btn-outline">LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Santosh Wavhale · Pune, Maharashtra · Built with purpose
+</footer>
+
+</body>
+</html>
+HTMLEOF
+echo "Done"
