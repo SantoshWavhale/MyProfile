@@ -296,7 +296,35 @@ cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
 <footer>
   © 2026 Santosh Wavhale · Pune, Maharashtra · Built with purpose
 </footer>
+<!-- Portfolio Visit Tracker -->
+<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@4/dist/fp.min.js"></script>
+<script>
+  async function trackVisit() {
+    // Step 1: Generate fingerprint ID
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    const visitorId = result.visitorId; // unique ID per browser/device
 
+    // Step 2: Collect metadata
+    const visitData = {
+      fingerprint_id: visitorId,
+      page: window.location.pathname,
+      referrer: document.referrer || "direct",
+      device: /Mobi|Android/i.test(navigator.userAgent) ? "mobile" : "desktop",
+      browser: navigator.userAgent,
+      screen_resolution: `${screen.width}x${screen.height}`,
+      language: navigator.language,
+      visited_at: new Date().toISOString()
+    };
+
+    console.log("Visit tracked:", visitData); // you'll see this in browser console for now
+
+    // Step 3: Send to Supabase (we'll plug this in during Step B)
+    // await sendToSupabase(visitData);
+  }
+
+  trackVisit();
+</script>
 </body>
 </html>
 HTMLEOF
