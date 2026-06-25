@@ -315,6 +315,16 @@ cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
 
     if (response.ok) {
       console.log("Visit saved to Supabase");
+      await fetch(
+  "https://obrohtnkehcmtpidufde.supabase.co/functions/v1/telegram-notify",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(visitData)
+  }
+);
     } else {
       console.error("Failed to save visit", await response.text());
     }
