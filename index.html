@@ -315,12 +315,14 @@ cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
 
     if (response.ok) {
       console.log("Visit saved to Supabase");
-      await fetch(
+     await fetch(
   "https://obrohtnkehcmtpidufde.supabase.co/functions/v1/telegram-notify",
   {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
     },
     body: JSON.stringify(visitData)
   }
