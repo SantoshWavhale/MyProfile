@@ -849,7 +849,57 @@
       handleLogin();
     }
   });
+// Handle password reset link from email
+async function handlePasswordReset() {
+  const hash = window.location.hash;
+  if (hash.includes("type=recovery")) {
+    const params = new URLSearchParams(hash.replace("#", "?"));
+    const accessToken = params.get("access_token");
 
+    if (accessToken) {
+      // Show password reset form
+      document.getElementById("login-screen").innerHTML = `
+        <div class="login-card">
+          <div class="logo">🔑</div>
+          <h1>Set New Password</h1>
+          <p>Choose a password for your dashboard.</p>
+          <div class="field">
+            <label>NEW PASSWORD</label>
+            <input type="password" id="new-password" placeholder="Min 6 characters" />
+          </div>
+          <button class="btn-primary" onclick="submitNewPassword('${accessToken}')">Set Password</button>
+          <div class="error-msg" id="error-msg"></div>
+        </div>`;
+    }
+  }
+}
+
+async function submitNewPassword(token) {
+  const password = document.getElementById("new-password").value;
+  const err = document.getElementById("error-msg");
+
+  if (password.length < 6) {
+    err.textContent = "Password must be at least 6 characters.";
+    err.style.display = "block";
+    return;
+  }
+
+  // Set the session using the token first
+  await sb.auth.setSession({ access_token: token, refresh_token: token });
+
+  const { error } = await sb.auth.updateUser({ password });
+
+  if (error) {
+    err.textContent = error.message;
+    err.style.display = "block";
+  } else {
+    alert("Password set! You can now log in.");
+    window.location.href = "/MyProfile/dashboard.html";
+  }
+}
+
+handlePasswordReset();
+init();
   init();
 </script>
 </body>
